@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'leave_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_USERNAME'),
+        'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD':config('DB_PASSWORD'),
         'HOST':config('DB_HOST'),
