@@ -43,7 +43,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Toaster />
       <nav className="bg-blue-600 p-4 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-white font-bold text-2xl">

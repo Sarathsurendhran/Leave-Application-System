@@ -12,6 +12,8 @@ const ApplyLeaveModal = ({ closeModal }) => {
     reason: "",
   });
 
+  const [errors, setErros] = useState({});
+
   const handleInputChange = (e) => {
     setLeaveData({ ...leaveData, [e.target.name]: e.target.value });
   };
@@ -36,6 +38,9 @@ const ApplyLeaveModal = ({ closeModal }) => {
         navigate("/dashboard");
       }
     } catch (error) {
+      if (error.response && error.response.data) {
+        setErros(error.response.data);
+      }
       toast.error("Failed to submit leave request.");
     }
   };
@@ -67,13 +72,14 @@ const ApplyLeaveModal = ({ closeModal }) => {
               onChange={handleInputChange}
               className="mt-1 block w-full p-2 border rounded-md shadow-sm"
             >
-            <option value="">Select Leave Type</option>
-            <option value="annual">Annual Leave</option>
-            <option value="sick">Sick Leave</option>
-            <option value="casual">Casual Leave</option>
-            <option value="maternity">Maternity Leave</option>
+              <option value="">Select Leave Type</option>
+              <option value="annual">Annual Leave</option>
+              <option value="sick">Sick Leave</option>
+              <option value="casual">Casual Leave</option>
+              <option value="maternity">Maternity Leave</option>
             </select>
           </div>
+          {errors.leave_type && <span className="text-red-600">{errors.leave_type[0]}</span>}
           <div>
             <label
               htmlFor="date"
@@ -88,9 +94,10 @@ const ApplyLeaveModal = ({ closeModal }) => {
               value={leaveData.date}
               onChange={handleInputChange}
               className="mt-1 block w-full p-2 border rounded-md shadow-sm"
-              min={new Date().toISOString().split('T')[0]}
+              min={new Date().toISOString().split("T")[0]}
             />
           </div>
+          {errors.date && <span className="text-red-600">Please Select Date</span>}
           <div>
             <label
               htmlFor="reason"
@@ -106,6 +113,7 @@ const ApplyLeaveModal = ({ closeModal }) => {
               className="mt-1 block w-full p-2 border rounded-md shadow-sm"
             />
           </div>
+          {errors.reason && <span className="text-red-600">{errors.reason[0]}</span>}
           <button
             type="submit"
             className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700"

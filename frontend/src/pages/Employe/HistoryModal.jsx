@@ -9,13 +9,13 @@ const LeaveHistory = ({closeModal}) => {
   useEffect(() => {
     const fetchLeaveHistory = async () => {
       try {
-        const token = localStorage.getItem('access');  // Get token from local storage
+        const token = localStorage.getItem('access'); 
         const response = await axios.get(baseURL + '/leave/history/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setLeaveHistory(response.data);  // Set the fetched data to state
+        setLeaveHistory(response.data);  
       } catch (error) {
         console.error('Error fetching leave history:', error);
       }
