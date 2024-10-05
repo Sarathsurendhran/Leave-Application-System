@@ -18,7 +18,7 @@ class ApplyLeaveRequestView(generics.CreateAPIView):
         user = request.user
         # Create a new leave request for the employee (user)
         data = request.data.copy()
-        data['employee'] = user.id  # Set the employee to the current logged-in user
+        data['employee'] = user.id 
         
         # Use the serializer to validate and save the data
         serializer = self.get_serializer(data=data)

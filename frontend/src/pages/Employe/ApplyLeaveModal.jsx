@@ -1,7 +1,5 @@
-
-
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -9,9 +7,9 @@ const ApplyLeaveModal = ({ closeModal }) => {
   const baseURL = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
   const [leaveData, setLeaveData] = useState({
-    leave_type: '',
-    date: '',
-    reason: ''
+    leave_type: "",
+    date: "",
+    reason: "",
   });
 
   const handleInputChange = (e) => {
@@ -22,23 +20,20 @@ const ApplyLeaveModal = ({ closeModal }) => {
     e.preventDefault();
     const token = localStorage.getItem("access");
     console.log("the token is -----------", token);
-    
+
     try {
       const response = await axios.post(baseURL + "/leave/apply/", leaveData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("thelll rethecode=====",response.status);
-      
+
       if (response.status === 201) {
-        console.log("is this work================");
         toast.success("Leave request submitted successfully!");
         console.log("Closing modal");
 
-        closeModal(); // Close modal after successful submission
-        navigate('/dashboard');
-
+        closeModal();
+        navigate("/dashboard");
       }
     } catch (error) {
       toast.error("Failed to submit leave request.");
@@ -53,13 +48,18 @@ const ApplyLeaveModal = ({ closeModal }) => {
           onClick={closeModal}
           className="absolute top-2 right-2 text-gray-600 hover:text-red-500"
         >
-         &times;
+          &times;
         </button>
-        
+
         <h2 className="text-xl font-bold mb-4">Apply for Leave</h2>
         <form onSubmit={submitLeaveRequest} className="space-y-4">
           <div>
-            <label htmlFor="type" className="block text-sm font-medium text-gray-700">Leave Type</label>
+            <label
+              htmlFor="type"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Leave Type
+            </label>
             <select
               id="leave_type"
               name="leave_type"
@@ -67,13 +67,20 @@ const ApplyLeaveModal = ({ closeModal }) => {
               onChange={handleInputChange}
               className="mt-1 block w-full p-2 border rounded-md shadow-sm"
             >
-              <option value="">Select Leave Type</option>
-              <option value="annual">Annual Leave</option>
-              <option value="sick">Sick Leave</option>
+            <option value="">Select Leave Type</option>
+            <option value="annual">Annual Leave</option>
+            <option value="sick">Sick Leave</option>
+            <option value="casual">Casual Leave</option>
+            <option value="maternity">Maternity Leave</option>
             </select>
           </div>
           <div>
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
+            <label
+              htmlFor="date"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Date
+            </label>
             <input
               type="date"
               id="date"
@@ -81,10 +88,16 @@ const ApplyLeaveModal = ({ closeModal }) => {
               value={leaveData.date}
               onChange={handleInputChange}
               className="mt-1 block w-full p-2 border rounded-md shadow-sm"
+              min={new Date().toISOString().split('T')[0]}
             />
           </div>
           <div>
-            <label htmlFor="reason" className="block text-sm font-medium text-gray-700">Reason</label>
+            <label
+              htmlFor="reason"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Reason
+            </label>
             <textarea
               id="reason"
               name="reason"
@@ -93,7 +106,10 @@ const ApplyLeaveModal = ({ closeModal }) => {
               className="mt-1 block w-full p-2 border rounded-md shadow-sm"
             />
           </div>
-          <button type="submit" className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700">
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700"
+          >
             Submit Leave Request
           </button>
           <button

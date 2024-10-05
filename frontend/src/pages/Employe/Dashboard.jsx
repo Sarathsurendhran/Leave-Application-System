@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -20,12 +19,11 @@ const Dashboard = () => {
     // Clear tokens from local storage
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
-    localStorage.removeItem("tokens")
+    localStorage.removeItem("tokens");
 
     // Redirect to login page
     navigate("/login");
   };
-
 
   const openApplyModal = () => {
     setIsApplyModalOpen(true);
@@ -47,11 +45,20 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-100">
       <Toaster />
       <nav className="bg-blue-600 p-4 shadow-lg">
-        <div className="container mx-auto flex justify-between">
-          <h1 className="text-white text-lg">Welcome, {firstName}</h1>
-          <button className="bg-red-500 px-4 py-2 rounded text-white"  onClick={handleLogout}>
-            Logout
-          </button>
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-white font-bold text-2xl">
+            Leave Application System
+          </h1>
+
+          <div className="flex items-center space-x-4 ml-auto">
+            <h1 className="text-white text-lg">Welcome, {firstName}</h1>
+            <button
+              className="bg-red-500 px-4 py-2 rounded text-white"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -71,11 +78,11 @@ const Dashboard = () => {
             View Leave History
           </button>
           <button
-  onClick={() => navigate("/empreport")} // Navigate to the reports page
-  className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700"
->
-  Download Leave Report
-</button>
+            onClick={() => navigate("/empreport")}
+            className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700"
+          >
+            Download Leave Report
+          </button>
         </div>
 
         {/* Right Side - Calendar */}
@@ -83,14 +90,17 @@ const Dashboard = () => {
           <h2 className="text-xl font-bold mb-4">Leave Calendar</h2>
           <Calendar
             tileClassName={({ date }) => {
-              const leaveDates = calendarLeaves.map(leave => new Date(leave.date).toDateString());
-              return leaveDates.includes(date.toDateString()) ? "bg-red-200" : null;
+              const leaveDates = calendarLeaves.map((leave) =>
+                new Date(leave.date).toDateString()
+              );
+              return leaveDates.includes(date.toDateString())
+                ? "bg-red-200"
+                : null;
             }}
             className="w-full"
           />
         </div>
       </div>
-      
 
       {/* Apply Leave Modal */}
       {isApplyModalOpen && <ApplyLeaveModal closeModal={closeApplyModal} />}
