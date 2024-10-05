@@ -21,7 +21,7 @@ const ApplyLeaveModal = ({ closeModal }) => {
   const submitLeaveRequest = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("access");
-    console.log("the token is -----------", token);
+
 
     try {
       const response = await axios.post(baseURL + "/leave/apply/", leaveData, {

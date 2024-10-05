@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import ApplyLeaveModal from "./ApplyLeaveModal";
-// import HistoryModal from "./HistoryModal";
+import axios from "axios";
 import LeaveHistory from "./HistoryModal";
 import { useSelector } from "react-redux";
 import { Toaster } from "sonner";
 import { useNavigate } from "react-router-dom";
+import DownloadLeaveReport from "./DownloadLeaveReport";
+
 
 const Dashboard = () => {
   // const baseURL = import.meta.env.VITE_BASE_URL;
@@ -15,13 +17,14 @@ const Dashboard = () => {
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const firstName = useSelector((state) => state.auth.first_name);
   const [calendarLeaves, setCalendarLeaves] = useState([]);
+  const baseURL = import.meta.env.VITE_BASE_URL
   const handleLogout = () => {
     // Clear tokens from local storage
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     localStorage.removeItem("tokens");
 
-    // Redirect to login page
+    
     navigate("/login");
   };
 
@@ -40,6 +43,27 @@ const Dashboard = () => {
   const closeHistoryModal = () => {
     setIsHistoryModalOpen(false);
   };
+
+  
+  useEffect(() => {
+    const fetchLeaveHistory = async () => {
+      try {
+        const token = localStorage.getItem('access'); 
+        const response = await axios.get(baseURL + '/leave/history/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCalendarLeaves(response.data);  
+      } catch (error) {
+        console.error('Error fetching leave history:', error);
+      }
+    };
+
+    fetchLeaveHistory();
+  }, []);
+
+
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -76,12 +100,9 @@ const Dashboard = () => {
           >
             View Leave History
           </button>
-          <button
-            onClick={() => navigate("/empreport")}
-            className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700"
-          >
-            Download Leave Report
-          </button>
+
+          <DownloadLeaveReport/>
+         
         </div>
 
         {/* Right Side - Calendar */}
@@ -117,7 +138,6 @@ const Dashboard = () => {
               &times;
             </button>
 
-            {/* Render LeaveHistory directly in the modal */}
             <LeaveHistory />
           </div>
         </div>
