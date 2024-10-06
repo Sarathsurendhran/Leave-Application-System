@@ -12,14 +12,15 @@ import LeaveHistory from './pages/Employe/HistoryModal';
 import ManagerLeaveHistory from './pages/Manager/LeaveHistory';
 import EmployeeLeaveReport from './pages/Employe/EmployeeReport';
 import ManagerLeaveReport from './pages/Manager/MangerReportPage';
+import PublicRoute from './utils/PublicRoute';
 
 const App = () => {
    
     return (
         <Router>
             <Routes>
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login/>} />
+                <Route path="/register" element={<PublicRoute><Register/></PublicRoute>} />
+                <Route path="/login" element={<PublicRoute><Login/></PublicRoute>}/>
                 <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/> 
                 <Route path="/applyleave" element={<PrivateRoute><ApplyLeaveModal/></PrivateRoute>}/> 
                 <Route path="/managerhistoryleave" element={<PrivateRoute><ManagerLeaveHistory/></PrivateRoute>}/> 

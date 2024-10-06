@@ -19,12 +19,8 @@ const Dashboard = () => {
   const [calendarLeaves, setCalendarLeaves] = useState([]);
   const baseURL = import.meta.env.VITE_BASE_URL
   const handleLogout = () => {
-    // Clear tokens from local storage
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
-    localStorage.removeItem("tokens");
 
-    
+    localStorage.clear()
     navigate("/login");
   };
 

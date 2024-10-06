@@ -1,29 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
-import isAuthUser from "./isAuthuser";
-
+import isAuthUser from "./isAuthUser";
+import Loader from "./Loader";
 
 const PrivateRoute = ({ children }) => {
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
     const authenticate = async () => {
-      const authStatus = await isAuthUser(dispatch);
-      setIsAuthenticated(authStatus);
-      setIsLoading(false);
+      try {
+        const authStatus = await isAuthUser();
+
+        setIsAuthenticated(authStatus.isAuthenticated);
+      } catch (error) {
+        console.log("Error during authentication:", error);
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+      }
     };
+
     authenticate();
-  }, [dispatch]);
+  }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
-  return isAuthenticated ? children : <Navigate to="/" />
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
+  return children;
 };
 
 export default PrivateRoute;
