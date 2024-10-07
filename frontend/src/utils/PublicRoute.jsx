@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import isAuthUser from "./isAuthUser";
+import isAuthUser from "./isAuthuser";
 import Loader from "./Loader";
 
 const PublicRoute = ({ children }) => {
