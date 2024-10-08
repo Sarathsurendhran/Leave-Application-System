@@ -64,7 +64,7 @@ MIDDLEWARE = [
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-   "https://main.dpsgfuxcbu1j1.amplifyapp.com/"
+   "https://main.dpsgfuxcbu1j1.amplifyapp.com"
 ]
 # CORS_ALLOW_ALL_ORIGINS = True
 
