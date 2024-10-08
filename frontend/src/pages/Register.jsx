@@ -166,7 +166,7 @@ const Register = () => {
             )}
           </div>
 
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <input
               id="is_manager"
               name="is_manager"
@@ -181,7 +181,7 @@ const Register = () => {
             >
               Manager
             </label>
-          </div>
+          </div> */}
 
           <div>
             <button
