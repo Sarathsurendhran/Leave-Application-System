@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import ManagerLeaveHistory from "./LeaveHistory";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import LeaveRequests from "./LeaveRequests";
 import { useSelector } from "react-redux";
 import { Toaster } from "sonner";
+import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Dashboard = () => {
   const [isLeaveHistoryModalOpen, setIsLeaveHistoryModalOpen] = useState(false);
   // const firstName = useSelector((state) => state.auth.first_name);
   const [calendarLeaves, setCalendarLeaves] = useState([]);
-  const [requestedLeaves, setRequestedLeaves] = useState([]);
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   const openRequestedLeavesModal = () => {
     setIsRequestedLeavesModalOpen(true);
@@ -32,6 +33,30 @@ const Dashboard = () => {
     setIsLeaveHistoryModalOpen(false);
   };
 
+  useEffect(() => {
+    const fetchLeaveHistory = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        const response = await axios.get(baseURL + "/leave/manager-history/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setCalendarLeaves(response.data);
+      } catch (error) {
+        console.error("Error fetching leave history:", error);
+      }
+    };
+
+    fetchLeaveHistory();
+  }, []);
+
+  const handlelogout = () => {
+    console.log("called");
+    localStorage.clear();
+    navigate("login");
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-blue-600 p-4 shadow-lg">
@@ -39,7 +64,7 @@ const Dashboard = () => {
           <h1 className="text-white text-lg">Welcome</h1>
           <button
             className="bg-red-500 px-4 py-2 rounded text-white"
-            onClick={() => {}}
+            onClick={handlelogout}
           >
             Logout
           </button>
@@ -62,7 +87,7 @@ const Dashboard = () => {
             Leave History
           </button>
           <button
-            onClick={() => navigate("/manreport")} // Navigate to the reports page
+            onClick={() => navigate("/manreport")}
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
             Generate Report

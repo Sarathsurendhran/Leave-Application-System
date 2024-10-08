@@ -32,7 +32,7 @@ const ManagerLeaveHistory = ({ closeModal }) => {
         <h2 className="text-2xl font-bold mb-6 text-center">Manager Leave Request History</h2>
 
         {/* Table Layout */}
-        <div className="overflow-x-auto">
+        <div className="overflow-auto max-h-80">
           <table className="min-w-full table-auto border-collapse border border-gray-200">
             <thead className="bg-gray-100">
               <tr>
