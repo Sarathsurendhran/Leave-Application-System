@@ -9,7 +9,6 @@ import { Toaster } from "sonner";
 import { useNavigate } from "react-router-dom";
 import DownloadLeaveReport from "./DownloadLeaveReport";
 
-
 const Dashboard = () => {
   // const baseURL = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
@@ -17,10 +16,9 @@ const Dashboard = () => {
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const firstName = useSelector((state) => state.auth.first_name);
   const [calendarLeaves, setCalendarLeaves] = useState([]);
-  const baseURL = import.meta.env.VITE_BASE_URL
+  const baseURL = import.meta.env.VITE_BASE_URL;
   const handleLogout = () => {
-
-    localStorage.clear()
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -40,26 +38,23 @@ const Dashboard = () => {
     setIsHistoryModalOpen(false);
   };
 
-  
   useEffect(() => {
     const fetchLeaveHistory = async () => {
       try {
-        const token = localStorage.getItem('access'); 
-        const response = await axios.get(baseURL + '/leave/history/', {
+        const token = localStorage.getItem("access");
+        const response = await axios.get(baseURL + "/leave/history/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setCalendarLeaves(response.data);  
+        setCalendarLeaves(response.data);
       } catch (error) {
-        console.error('Error fetching leave history:', error);
+        console.error("Error fetching leave history:", error);
       }
     };
 
     fetchLeaveHistory();
   }, []);
-
-
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -97,8 +92,7 @@ const Dashboard = () => {
             View Leave History
           </button>
 
-          <DownloadLeaveReport/>
-         
+          <DownloadLeaveReport />
         </div>
 
         {/* Right Side - Calendar */}
@@ -106,10 +100,19 @@ const Dashboard = () => {
           <h2 className="text-xl font-bold mb-4">Leave Calendar</h2>
           <Calendar
             tileClassName={({ date }) => {
-              const leaveDates = calendarLeaves.map((leave) =>
-                new Date(leave.date).toDateString()
-              );
-              return leaveDates.includes(date.toDateString())
+              // Get the leave dates
+              const leaveRanges = calendarLeaves
+                .filter((leave) => leave.status !== "cancelled")
+                .map((leave) => ({
+                  start: new Date(leave.start_date),
+                  end: new Date(leave.end_date),
+                }));
+
+              // Check if the current date is within any leave range
+              return leaveRanges.some(({ start, end }) => {
+                // Check if the date falls within the start and end date inclusive
+                return date >= start && date <= end;
+              })
                 ? "bg-red-200"
                 : null;
             }}

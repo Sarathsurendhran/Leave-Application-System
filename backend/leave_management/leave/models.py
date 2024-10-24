@@ -21,9 +21,8 @@ class LeaveRequest(models.Model):
         User, on_delete=models.CASCADE, related_name="leave_requests"
     )
     leave_type = models.CharField(max_length=10, choices=LEAVE_TYPE_CHOICES)
-    # start_date = models.DateField()
-    # end_date = models.DateField()
-    date = models.DateField() 
+    start_date = models.DateField(default=timezone.now)
+    end_date = models.DateField(default=timezone.now)
     reason = models.TextField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
     submission_date = models.DateTimeField(default=timezone.now)

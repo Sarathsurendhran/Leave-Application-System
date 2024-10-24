@@ -86,12 +86,12 @@ const Dashboard = () => {
           >
             Leave History
           </button>
-          <button
+          {/* <button
             onClick={() => navigate("/manreport")}
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
             Generate Report
-          </button>
+          </button> */}
         </div>
 
         {/* Right Side - Calendar */}
@@ -99,10 +99,19 @@ const Dashboard = () => {
           <h2 className="text-xl font-bold mb-4">Leave Calendar</h2>
           <Calendar
             tileClassName={({ date }) => {
-              const leaveDates = calendarLeaves.map((leave) =>
-                new Date(leave.date).toDateString()
-              );
-              return leaveDates.includes(date.toDateString())
+              // Get the leave dates
+              const leaveRanges = calendarLeaves
+                .filter((leave) => leave.status !== "cancelled")
+                .map((leave) => ({
+                  start: new Date(leave.start_date),
+                  end: new Date(leave.end_date),
+                }));
+
+              // Check if the current date is within any leave range
+              return leaveRanges.some(({ start, end }) => {
+                // Check if the date falls within the start and end date inclusive
+                return date >= start && date <= end;
+              })
                 ? "bg-red-200"
                 : null;
             }}

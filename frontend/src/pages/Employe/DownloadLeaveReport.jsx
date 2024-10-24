@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
@@ -36,16 +35,17 @@ const DownloadLeaveReport = () => {
     if (leaveHistory.length > 0) {
       // Define table headers
       const headers = [
-        ["Leave Type", "Date", "Reason", "Status", "Submission Date"],
+        ["Leave Type", "Start Date", "End Date", "Reason", "Status", "Submission Date"],
       ];
 
       // Define table rows
       const data = leaveHistory.map((leave) => [
-        leave.leave_type.charAt(0).toUpperCase() + leave.leave_type.slice(1),
-        new Date(leave.date).toLocaleDateString(),
-        leave.reason,
-        leave.status.charAt(0).toUpperCase() + leave.status.slice(1),
-        new Date(leave.submission_date).toLocaleString(),
+        leave.leave_type.charAt(0).toUpperCase() + leave.leave_type.slice(1), // Capitalize Leave Type
+        new Date(leave.start_date).toLocaleDateString(),                     // Start Date
+        new Date(leave.end_date).toLocaleDateString(),                       // End Date
+        leave.reason,                                                         // Reason
+        leave.status.charAt(0).toUpperCase() + leave.status.slice(1),       // Capitalize Status
+        new Date(leave.submission_date).toLocaleString(),                    // Submission Date
       ]);
 
       // Add table to PDF using autoTable
@@ -77,4 +77,3 @@ const DownloadLeaveReport = () => {
 };
 
 export default DownloadLeaveReport;
-
